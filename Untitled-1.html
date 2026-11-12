@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Odhy Mahar — Sistem Pemesanan &amp; Manajemen Mahar</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #fdf2f8 0%, #f8faf9 50%, #ecfdf5 100%); }
+    .font-serif-mahar { font-family: 'Playfair Display', serif; }
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="text-stone-700 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <header class="no-print bg-white border-b border-pink-200 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-400 to-emerald-400 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          OM
+        </div>
+        <div>
+          <h1 class="font-serif-mahar text-lg sm:text-xl font-bold text-pink-700 leading-tight">Odhy Mahar</h1>
+          <p class="text-xs text-stone-500">Hias Mahar Pernikahan &amp; Seserahan</p>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-2">
+        <button id="tabBtnOrder" type="button" class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-pink-500 text-white shadow-sm transition">
+          Form Pemesanan
+        </button>
+        <button id="tabBtnAdmin" type="button" class="px-3.5 py-2 rounded-lg text-sm font-semibold text-stone-600 hover:bg-stone-100 transition">
+          Dashboard &amp; Stok
+        </button>
+        <button id="tabBtnReport" type="button" class="px-3.5 py-2 rounded-lg text-sm font-semibold text-stone-600 hover:bg-stone-100 transition">
+          Laporan
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toast / Alert Banner -->
+  <div id="toastContainer" class="no-print fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6">
+
+    <!-- SECTION 1: FORM PEMESANAN ONLINE -->
+    <section id="viewOrder" class="space-y-6">
+      <!-- Hero Banner Nuansa Mahar -->
+      <div class="rounded-2xl bg-gradient-to-r from-pink-100/90 via-white to-emerald-100/90 border border-pink-200/70 p-5 sm:p-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="space-y-1.5">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 border border-pink-200 text-xs font-medium text-pink-700">
+            <span>&#10024;</span> Spesialis Hias Mahar Pernikahan &amp; Seserahan
+          </div>
+          <h2 class="font-serif-mahar text-xl sm:text-2xl font-bold text-stone-800">
+            Wujudkan Mahar Pernikahan Impian Anda
+          </h2>
+          <p class="text-xs sm:text-sm text-stone-600 max-w-2xl">
+            Pesan mahar uang, emas, sertifikat, hingga box seserahan dengan tema warna pilihan. Cek jadwal pengerjaan dan pantau progresnya langsung secara online.
+          </p>
+        </div>
+        <div class="flex flex-wrap sm:flex-col gap-2 shrink-0">
+          <span class="px-3 py-1.5 rounded-xl bg-white/90 border border-pink-200 text-xs font-semibold text-pink-700 shadow-sm">&#128141; Bingkai 30x40 &amp; Custom</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/90 border border-emerald-200 text-xs font-semibold text-emerald-700 shadow-sm">&#127800; Rangkaian Bunga &amp; Ornamen</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Form Input Pesanan -->
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-pink-200/80 shadow-sm p-5 sm:p-6">
+          <div class="mb-5">
+            <h2 class="text-lg font-bold text-stone-900">Form Pemesanan Mahar Online</h2>
+            <p class="text-sm text-stone-500 mt-0.5">Isi detail pesanan untuk cek ketersediaan jadwal, estimasi harga, dan pembayaran.</p>
+          </div>
+
+          <form id="orderForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="namaPengantin" class="block text-xs font-semibold text-stone-700 mb-1">Nama Pengantin *</label>
+                <input id="namaPengantin" type="text" required placeholder="Contoh: Dimas &amp; Putri"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+              <div>
+                <label for="noWa" class="block text-xs font-semibold text-stone-700 mb-1">No. WhatsApp *</label>
+                <input id="noWa" type="tel" required placeholder="08xxxxxxxxxx"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="tanggalPesan" class="block text-xs font-semibold text-stone-700 mb-1">Tanggal Pesan *</label>
+                <input id="tanggalPesan" type="date" required
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+              <div>
+                <label for="deadline" class="block text-xs font-semibold text-stone-700 mb-1">Deadline Selesai *</label>
+                <input id="deadline" type="date" required
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label for="jenisMahar" class="block text-xs font-semibold text-stone-700 mb-1">Jenis Mahar *</label>
+                <select id="jenisMahar"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                  <option value="Mahar uang">Mahar uang (Rp 1.200.000)</option>
+                  <option value="Mahar uang + emas">Mahar uang + emas (Rp 1.500.000)</option>
+                  <option value="Mahar + sertifikat">Mahar + sertifikat (Rp 1.800.000)</option>
+                </select>
+              </div>
+              <div>
+                <label for="ukuranBingkai" class="block text-xs font-semibold text-stone-700 mb-1">Ukuran Bingkai *</label>
+                <select id="ukuranBingkai"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                  <option value="30x40">30x40 cm (Standar)</option>
+                  <option value="40x50">40x50 cm (+Rp 250.000)</option>
+                  <option value="25x35">25x35 cm (-Rp 100.000)</option>
+                </select>
+              </div>
+              <div>
+                <label for="temaWarna" class="block text-xs font-semibold text-stone-700 mb-1">Tema / Warna *</label>
+                <input id="temaWarna" type="text" required placeholder="Putih Gold / Pink / Hijau"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="isiMahar" class="block text-xs font-semibold text-stone-700 mb-1">Isi Mahar *</label>
+                <input id="isiMahar" type="text" required placeholder="Contoh: Uang, emas, bunga"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+              <div>
+                <label for="catatan" class="block text-xs font-semibold text-stone-700 mb-1">Catatan Tambahan</label>
+                <input id="catatan" type="text" placeholder="Permintaan khusus (opsional)"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-stone-100">
+              <div>
+                <label for="metodeBayar" class="block text-xs font-semibold text-stone-700 mb-1">Metode Pembayaran *</label>
+                <select id="metodeBayar"
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                  <option value="Transfer">Transfer Bank</option>
+                  <option value="QRIS">QRIS</option>
+                  <option value="Cash">Cash di Toko</option>
+                </select>
+              </div>
+              <div>
+                <label for="jumlahDp" class="block text-xs font-semibold text-stone-700 mb-1">Nominal Pembayaran / DP (Rp) *</label>
+                <input id="jumlahDp" type="number" min="0" step="50000" value="500000" required
+                  class="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            </div>
+
+            <!-- Live Schedule & Price Preview -->
+            <div id="scheduleStatusBox" class="rounded-xl p-3.5 text-sm border bg-stone-50 border-stone-200 text-stone-700">
+              Pilih tanggal pesan dan deadline untuk mengecek ketersediaan jadwal pengerjaan.
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+              <div>
+                <p class="text-xs text-stone-500">Total Harga Otomatis</p>
+                <p id="previewTotalHarga" class="text-xl font-bold text-pink-600">Rp 1.200.000</p>
+                <p id="previewSisaBayar" class="text-xs text-stone-500">Sisa pembayaran: Rp 700.000</p>
+              </div>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold shadow-sm transition">
+                Lanjut ke Pembayaran
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Ringkasan Status & Antrean -->
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl border border-pink-200/80 shadow-sm p-5">
+            <h3 class="text-sm font-bold text-stone-900 mb-3">Cek Status Pesanan
